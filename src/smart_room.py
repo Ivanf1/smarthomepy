@@ -66,6 +66,10 @@ class SmartRoom:
             # open
             self.change_servo_angle(self.get_servo_duty_cycle(True))
             self.window_open = True
+        else:
+            # close
+            self.change_servo_angle(self.get_servo_duty_cycle(False))
+            self.window_open = False
 
     def monitor_air_quality(self) -> None:
         # To be implemented
