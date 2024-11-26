@@ -51,3 +51,11 @@ class TestSmartRoom(unittest.TestCase):
         system.manage_window()
         mock_servo.assert_called_with(12)
 
+    @patch.object(Adafruit_BMP280_I2C,"temperature", new_callable=PropertyMock)
+    @patch.object(SmartRoom, "change_servo_angle")
+    def test_should_close_the_window(self, mock_servo: Mock, mock_temperature_sensors: Mock):
+        mock_temperature_sensors.side_effect = [25, 22] # indoor, outdoor
+        system = SmartRoom()
+        system.manage_window()
+        mock_servo.assert_called_with(2)
+
