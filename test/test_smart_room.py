@@ -5,7 +5,6 @@ from unittest.mock import Mock
 
 from mock.adafruit_bmp280 import Adafruit_BMP280_I2C
 from src.smart_room import SmartRoom
-from mock.senseair_s8 import SenseairS8
 
 
 class TestSmartRoom(unittest.TestCase):
@@ -43,3 +42,12 @@ class TestSmartRoom(unittest.TestCase):
         system = SmartRoom()
         system.manage_light_level()
         mock_light_bulb.assert_called_with(system.LED_PIN, False)
+
+    @patch.object(Adafruit_BMP280_I2C,"temperature", new_callable=PropertyMock)
+    @patch.object(SmartRoom, "change_servo_angle")
+    def test_should_open_the_window(self, mock_servo: Mock, mock_temperature_sensors: Mock):
+        mock_temperature_sensors.side_effect = [25, 28] # indoor, outdoor
+        system = SmartRoom()
+        system.manage_window()
+        mock_servo.assert_called_with(12)
+
