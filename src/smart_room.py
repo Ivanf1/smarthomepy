@@ -62,12 +62,20 @@ class SmartRoom:
                 self.light_on = False
 
     def manage_window(self) -> None:
-        # To be implemented
-        pass
+        if self.bmp280_indor.temperature - 2 < self.bmp280_outdoor.temperature:
+            # open
+            self.change_servo_angle(self.get_servo_duty_cycle(True))
+            self.window_open = True
 
     def monitor_air_quality(self) -> None:
         # To be implemented
         pass
+
+    def get_servo_duty_cycle(self, should_open: bool):
+        if should_open:
+            return (180 / 18) + 2.
+        else:
+            return (0 / 18) + 2.
 
 
     def change_servo_angle(self, duty_cycle):
