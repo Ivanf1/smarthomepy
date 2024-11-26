@@ -21,5 +21,5 @@ class TestSmartRoom(unittest.TestCase):
     def test_check_enough_light(self, mock_light_sensor: Mock):
         mock_light_sensor.return_value = True
         system = SmartRoom()
-        occupied = system.check_enough_light()
-        self.assertTrue(occupied)
+        enough_light = system.check_enough_light()
+        self.assertTrue(enough_light)
