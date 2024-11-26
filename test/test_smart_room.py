@@ -4,6 +4,7 @@ from unittest.mock import patch, PropertyMock
 from unittest.mock import Mock
 
 from mock.adafruit_bmp280 import Adafruit_BMP280_I2C
+from mock.senseair_s8 import SenseairS8
 from src.smart_room import SmartRoom
 
 
@@ -67,3 +68,10 @@ class TestSmartRoom(unittest.TestCase):
         system.manage_window()
         mock_servo.assert_called_with(2)
 
+    @patch.object(SenseairS8,"co2")
+    @patch.object(GPIO, "output")
+    def test_should_turn_on_fan(self, mock_fan: Mock, mock_co2_sensor: Mock):
+        mock_co2_sensor.return_value = 805
+        system = SmartRoom()
+        system.monitor_air_quality()
+        mock_fan.assert_called_with(system.FAN_PIN, True)
