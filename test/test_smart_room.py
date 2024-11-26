@@ -75,3 +75,11 @@ class TestSmartRoom(unittest.TestCase):
         system = SmartRoom()
         system.monitor_air_quality()
         mock_fan.assert_called_with(system.FAN_PIN, True)
+
+    @patch.object(SenseairS8, "co2")
+    @patch.object(GPIO, "output")
+    def test_should_turn_off_fan(self, mock_fan: Mock, mock_co2_sensor: Mock):
+        mock_co2_sensor.return_value = 400
+        system = SmartRoom()
+        system.monitor_air_quality()
+        mock_fan.assert_called_with(system.FAN_PIN, False)
